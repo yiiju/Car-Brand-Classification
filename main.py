@@ -9,7 +9,7 @@ import numpy as np
 
 import torch.optim as optim
 import torch.nn as nn
-from BestCNN import BestCNN
+from SimpleCNN import SimpleCNN
 from Train import train_model
 
 # Use GPU
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     trainSet = carDataset(root='./data', imgdir='training_data/training_data', labelfile='training_labels.csv', split='train', transform=transform)
     trainLoader = DataLoader(trainSet, batch_size=8, shuffle=True, num_workers=0, pin_memory=True)
 
-    net = BestCNN()
+    net = SimpleCNN()
     net.to(device)
     print(device)
     PATH = './net.pth'

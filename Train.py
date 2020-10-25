@@ -1,5 +1,5 @@
 import torch
-from BestCNN import BestCNN
+from SimpleCNN import SimpleCNN
 from plot import PlotCurve
 
 def train_model(model, criterion, optimizer, scheduler, num_epochs, doPlot, trainSet, trainLoader):
