@@ -9,12 +9,7 @@ import numpy as np
 import glob
 
 from SimpleCNN import SimpleCNN
-
-# Use GPU
-if torch.cuda.is_available():  
-  device = torch.device("cuda:8")  
-else:  
-  device = torch.device("cpu")
+import GlobalSetting
 
 class carDataset(Dataset):
     def __init__(self, root, imgdir, split, transform):
@@ -44,6 +39,7 @@ class carDataset(Dataset):
         image = self.transform(image)
         imageid = self.img_id[index]
 
+        # image = image.to(GlobalSetting.device)
         return image, imageid
 
     def __len__(self):
@@ -55,23 +51,25 @@ class carDataset(Dataset):
 # Convert a PIL image or numpy.ndarray to tensor.
 # (H*W*C) in range [0, 255] to a torch.FloatTensor of shape (C*H*W) in the range [0.0, 1.0].
 transform = transforms.Compose([
-    transforms.Resize((256, 256)),
+    transforms.Resize((512, 512)),
     transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    # transforms.Normalize(mean=[0.4706, 0.4598, 0.4545], std=[0.2628, 0.2616, 0.2663]),
 ])
 
 # Download test dataset
 testSet = carDataset(root='./data', imgdir='testing_data/testing_data', split='test', transform=transform)
-testLoader = DataLoader(testSet, batch_size=8, shuffle=False, num_workers=0, pin_memory=True)
+testLoader = DataLoader(testSet, batch_size=GlobalSetting.batch_size, shuffle=False, num_workers=4)
 
 # Load existed model
-net = SimpleCNN()
-PATH = './net.pth'
+# net = SimpleCNN()
+net = GlobalSetting.Model
+PATH = GlobalSetting.ModelPath
+
 net.load_state_dict(torch.load(PATH))
-net.to(device)
+net.to(GlobalSetting.device)
 
 net.eval()
-
 
 image_label = pd.read_csv('./data/training_labels.csv')
 le = LabelEncoder()
@@ -83,7 +81,7 @@ labelary = []
 with torch.no_grad():
     for data in testLoader:
         images, imageid = data
-        images = images.to(torch.device("cuda:8"))
+        images = images.to(GlobalSetting.device)
 
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
@@ -94,4 +92,4 @@ with torch.no_grad():
 df = pd.DataFrame({'id': idary,
                    'label': labelary})
 
-df.to_csv('./testOutput.csv', index=False)
+df.to_csv(GlobalSetting.TestResultPath, index=False)

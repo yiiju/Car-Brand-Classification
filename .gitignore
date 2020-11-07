@@ -1,4 +1,11 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
 TrainingCurve.png
 TrainingLossCurve.png
 try.py
 test.py
+testResult/*.csv
+modelPath/*.pth
+resultImg/*.png
