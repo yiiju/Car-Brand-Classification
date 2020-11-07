@@ -8,12 +8,12 @@ Test = True
 modelname = 'ResNet50_pretrain_finetuneall_512_epoch60'
 print(modelname)
 
-ModelPath = './modelPath/'+ modelname + '.pth'
+ModelPath = './modelPath/' + modelname + '.pth'
 TrainingLossCurve = './resultImg/TrainingLossCurve_' + modelname + '.png'
 TrainingCurve = './resultImg/TrainingCurve_' + modelname + '.png'
 AllCurve = './resultImg/AllCurve_' + modelname + '.png'
 TestResultPath = './testResult/' + modelname + 'Output.csv'
-FinalPATH = './modelPath/final_'+ modelname + '.pth'
+FinalPATH = './modelPath/final_' + modelname + '.pth'
 Epochs = 60
 batch_size = 16
 
@@ -50,7 +50,8 @@ Model.fc = nn.Linear(num_fc_ftr, 196)
 # Model.fc = nn.Linear(num_fc_ftr, 196)
 
 # DenseNet
-# Model = torch.hub.load('pytorch/vision:v0.6.0', 'densenet121', pretrained=True)
+# Model = torch.hub.load('pytorch/vision:v0.6.0',
+#                         'densenet121', pretrained=True)
 # for param in Model.parameters():
 #         param.requires_grad = False
 
@@ -59,11 +60,11 @@ Model.fc = nn.Linear(num_fc_ftr, 196)
 
 # num_fc_ftr = Model.classifier.in_features
 # Model.classifier = nn.Linear(num_fc_ftr, 196)
-        
+
 # Use GPU
-if torch.cuda.is_available():  
-  device = torch.device("cuda:8")  
-else:  
-  device = torch.device("cpu")
+if torch.cuda.is_available():
+    device = torch.device("cuda:8")
+else:
+    device = torch.device("cpu")
 
 print(device)

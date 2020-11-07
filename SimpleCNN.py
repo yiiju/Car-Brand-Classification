@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 # Model Structure
 class SimpleCNN(nn.Module):
     def __init__(self):
@@ -19,10 +20,10 @@ class SimpleCNN(nn.Module):
         x = self.conv2(x)
         x = F.relu(x)
         x = self.maxpool2(x)
-        x = self.conv3(x) 
+        x = self.conv3(x)
         x = F.relu(x)
         x = self.maxpool2(x)
         x = torch.flatten(x, 1)
         x = self.fc1(x)
         output = F.log_softmax(x, dim=1)
-        return output 
+        return output

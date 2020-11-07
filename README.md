@@ -19,6 +19,11 @@ Create directory for store model path, result inages, and test result.
 
 `python setup.py`
 
+### Coding Style
+Use PEP8 guidelines.
+
+`pycodestyle *.py`
+
 ## Dataset
 The data directory is structured as:
 ```

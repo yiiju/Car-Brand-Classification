@@ -3,7 +3,11 @@ import matplotlib.pyplot as plt
 
 import GlobalSetting
 
-def PlotCurve(epochs, trainLossValue=0, trainAccValue=0, valAccValue=0, doTrainloss=True, doTrain=True, doVal=True):
+
+def PlotCurve(
+        epochs, trainLossValue=0, trainAccValue=0, valAccValue=0,
+        doTrainloss=True, doTrain=True, doVal=True):
+
     if(doTrainloss):
         # Plot training loss curve
         epoch_list = np.arange(0, epochs)

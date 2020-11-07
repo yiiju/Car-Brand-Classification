@@ -4,7 +4,9 @@ from plot import PlotCurve
 
 import GlobalSetting
 
-def train_model(model, criterion, optimizer, scheduler, num_epochs, doPlot, trainSet, trainLoader, path):
+
+def train_model(model, criterion, optimizer, scheduler,
+                num_epochs, doPlot, trainSet, trainLoader, path):
     trainLossValue = []
     trainAccValue = []
     for epoch in range(num_epochs):  # Loop over the dataset multiple times
@@ -32,13 +34,14 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, doPlot, trai
 
             runningLoss += loss.item()
             runningAcc += (predicted == labels).sum().item()
-        
+
         scheduler.step(runningLoss)
 
         # Print statistics
         runningAcc = runningAcc / len(trainSet)
         runningLoss = runningLoss / len(trainSet)
-        print('[Epoch %d] Train loss: %.3f acc: %.3f' %(epoch + 1, runningLoss, runningAcc))
+        print('[Epoch %d] Train loss: %.3f acc: %.3f'
+              % (epoch + 1, runningLoss, runningAcc))
         trainAccValue.append(runningAcc)
         trainLossValue.append(runningLoss)
 
@@ -47,10 +50,12 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, doPlot, trai
     # Plot the curve of loss and accuracy
     if doPlot:
         PlotCurve(num_epochs, trainLossValue, trainAccValue, doVal=False)
-    
+
     return model
 
-def train_model_val(model, criterion, optimizer, scheduler, num_epochs, doPlot, trainSet, trainLoader, valSet, valLoader, path):
+
+def train_model_val(model, criterion, optimizer, scheduler, num_epochs,
+                    doPlot, trainSet, trainLoader, valSet, valLoader, path):
     trainLossValue = []
     trainAccValue = []
     valAccValue = []
@@ -84,7 +89,7 @@ def train_model_val(model, criterion, optimizer, scheduler, num_epochs, doPlot, 
             runningLoss += loss.item()
             trainTotal += labels.size(0)
             runningAcc += (predicted == labels).sum().item()
-        
+
         scheduler.step(runningLoss)
 
         model.eval()
@@ -108,20 +113,21 @@ def train_model_val(model, criterion, optimizer, scheduler, num_epochs, doPlot, 
         runningAcc = runningAcc / trainTotal
         runningLoss = runningLoss / trainTotal
         valAcc = valAcc / valTotal
-        print('[Epoch %d] Train loss: %.3f acc: %.3f' %(epoch + 1, runningLoss, runningAcc))
-        print('           Val acc: %.3f' %(valAcc))
+        print('[Epoch %d] Train loss: %.3f acc: %.3f'
+              % (epoch + 1, runningLoss, runningAcc))
+        print('           Val acc: %.3f' % (valAcc))
         trainAccValue.append(runningAcc)
         trainLossValue.append(runningLoss)
-        
+
         previousValue = valAccValue[-1]
         valAccValue.append(valAcc)
 
-        if valAcc >= previousValue:        
+        if valAcc >= previousValue:
             print("Store path")
             torch.save(model.state_dict(), path)
 
     # Plot the curve of loss and accuracy
     if doPlot:
         PlotCurve(num_epochs, trainLossValue, trainAccValue, valAccValue)
-    
+
     return model

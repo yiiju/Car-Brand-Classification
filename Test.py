@@ -11,6 +11,7 @@ import glob
 from SimpleCNN import SimpleCNN
 import GlobalSetting
 
+
 class carDataset(Dataset):
     def __init__(self, root, imgdir, split, transform):
         # --------------------------------------------
@@ -24,7 +25,7 @@ class carDataset(Dataset):
             # Run in all image in folder
             self.imgspath.append(imname)
             self.img_id.append(imname.split('/')[-1].split('.')[0])
-        
+
         print('Total data in {} split: {}'.format(split, len(self.img_id)))
 
     def __getitem__(self, index):
@@ -33,7 +34,7 @@ class carDataset(Dataset):
         # 2. Preprocess the data (torchvision.Transform)
         # 3. Return the data (e.g. image and label)
         # --------------------------------------------
-        
+
         imgpath = self.imgspath[index]
         image = Image.open(imgpath).convert('RGB')
         image = self.transform(image)
@@ -48,18 +49,23 @@ class carDataset(Dataset):
         # --------------------------------------------
         return len(self.img_id)
 
+
 # Convert a PIL image or numpy.ndarray to tensor.
-# (H*W*C) in range [0, 255] to a torch.FloatTensor of shape (C*H*W) in the range [0.0, 1.0].
+# (H*W*C) in range [0, 255] to a shape (C*H*W) in the range [0.0, 1.0].
 transform = transforms.Compose([
     transforms.Resize((512, 512)),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    # transforms.Normalize(mean=[0.4706, 0.4598, 0.4545], std=[0.2628, 0.2616, 0.2663]),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                         std=[0.229, 0.224, 0.225]),
+    # transforms.Normalize(mean=[0.4706, 0.4598, 0.4545],
+    #                     std=[0.2628, 0.2616, 0.2663]),
 ])
 
 # Download test dataset
-testSet = carDataset(root='./data', imgdir='testing_data/testing_data', split='test', transform=transform)
-testLoader = DataLoader(testSet, batch_size=GlobalSetting.batch_size, shuffle=False, num_workers=4)
+testSet = carDataset(root='./data', imgdir='testing_data/testing_data',
+                     split='test', transform=transform)
+testLoader = DataLoader(testSet, batch_size=GlobalSetting.batch_size,
+                        shuffle=False, num_workers=4)
 
 # Load existed model
 # net = SimpleCNN()
@@ -85,9 +91,9 @@ with torch.no_grad():
 
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
-        
-        idary = np.append(idary, imageid)    
-        labelary = np.append(labelary, le.inverse_transform(predicted.cpu()))     
+
+        idary = np.append(idary, imageid)
+        labelary = np.append(labelary, le.inverse_transform(predicted.cpu()))
 
 df = pd.DataFrame({'id': idary,
                    'label': labelary})

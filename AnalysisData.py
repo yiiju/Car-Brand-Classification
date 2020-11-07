@@ -14,10 +14,13 @@ le = LabelEncoder()
 image_label["int_label"] = le.fit_transform(image_label["label"])
 
 plt.figure()
-plt.bar(image_label["int_label"].unique(), image_label["label"].value_counts(), width=0.3, align='center', color='lightblue', label="Number of training data")
+plt.bar(image_label["int_label"].unique(), image_label["label"].value_counts(),
+        width=0.3, align='center',
+        color='lightblue', label="Number of training data")
 plt.legend()
 plt.xlabel('Number of training data')
 plt.savefig('./trainingdata.png')
+
 
 # Calculate mean and std of training data
 class MyDataset(Dataset):
@@ -26,9 +29,9 @@ class MyDataset(Dataset):
         for imname in glob.glob('data/training_data/training_data/*.jpg'):
             # Run in all image in folder
             self.imgspath.append(imname)
-        
+
         print('Total data: {}'.format(len(self.imgspath)))
-        
+
     def __getitem__(self, index):
         imgpath = self.imgspath[index]
         image = Image.open(imgpath).convert('RGB')
@@ -41,7 +44,7 @@ class MyDataset(Dataset):
 
     def __len__(self):
         return len(self.imgspath)
-    
+
 
 dataset = MyDataset()
 loader = DataLoader(
