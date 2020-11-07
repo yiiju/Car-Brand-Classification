@@ -3,7 +3,9 @@ A ResNet model using PyTorch to classify car brand in Kaggle competition [CS_T08
 
 ## Hardware
 Ubuntu 18.04 LTS
+
 Intel(R) Xeon(R) Silver 4210 CPU @ 2.20GHz
+
 1x GeForce RTX 2080 Ti
 
 ## Set Up
@@ -21,9 +23,9 @@ Create directory for store model path, result inages, and test result.
 The data directory is structured as:
 ```
 └── data 
-    ├── testing_data -- 5,000 test images
-    ├── training_data -- 11,185 training images
-    └── training_labels.csv -- training labels
+    ├── testing_data ─ 5,000 test images
+    ├── training_data ─ 11,185 training images
+    └── training_labels.csv ─ training labels
 ```
 
 ## Train
