@@ -61,7 +61,7 @@ if __name__ == '__main__':
     # Convert a PIL image or numpy.ndarray to tensor.
     # (H*W*C) in range [0, 255] to a shape (C*H*W) in the range [0.0, 1.0].
     transform = transforms.Compose([
-        transforms.Resize((512, 512)),
+        transforms.Resize((500, 700)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomRotation(15),
         transforms.ToTensor(),
@@ -92,7 +92,6 @@ if __name__ == '__main__':
 
     # Train the network
     epochs = GlobalSetting.Epochs
-    PATH = GlobalSetting.ModelPath
     model = train_model(model=net,
                         criterion=criterion,
                         optimizer=optimizer,
@@ -100,8 +99,7 @@ if __name__ == '__main__':
                         num_epochs=epochs,
                         doPlot=True,
                         trainSet=trainSet,
-                        trainLoader=trainLoader,
-                        path=PATH)
+                        trainLoader=trainLoader)
 
     # Save the trained model
-    # torch.save(model.state_dict(), GlobalSetting.FinalPATH)
+    torch.save(model.state_dict(), GlobalSetting.FinalPATH)

@@ -53,12 +53,14 @@ class carDataset(Dataset):
 # Convert a PIL image or numpy.ndarray to tensor.
 # (H*W*C) in range [0, 255] to a shape (C*H*W) in the range [0.0, 1.0].
 transform = transforms.Compose([
-    transforms.Resize((512, 512)),
+    transforms.Resize((500, 700)),
     transforms.ToTensor(),
+    # transforms.Normalize(mean=[0.5, 0.5, 0.5],
+    #                      std=[0.5, 0.5, 0.5]),
     transforms.Normalize(mean=[0.485, 0.456, 0.406],
                          std=[0.229, 0.224, 0.225]),
     # transforms.Normalize(mean=[0.4706, 0.4598, 0.4545],
-    #                     std=[0.2628, 0.2616, 0.2663]),
+    #                      std=[0.2628, 0.2616, 0.2663]),
 ])
 
 # Download test dataset
@@ -70,7 +72,7 @@ testLoader = DataLoader(testSet, batch_size=GlobalSetting.batch_size,
 # Load existed model
 # net = SimpleCNN()
 net = GlobalSetting.Model
-PATH = GlobalSetting.ModelPath
+PATH = GlobalSetting.TestModelPath
 
 net.load_state_dict(torch.load(PATH))
 net.to(GlobalSetting.device)

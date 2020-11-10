@@ -69,3 +69,33 @@ mean /= nb_samples
 std /= nb_samples
 print("Mean: {}".format(mean))
 print("Std: {}".format(std))
+
+# Calculate the average of width and height in training data
+maxwidth = 0.0
+maxheight = 0.0
+minwidth = 1000.0
+minheight = 1000.0
+width = 0.0
+height = 0.0
+num = 0
+for imname in glob.glob('data/training_data/training_data/*.jpg'):
+    image = Image.open(imname).convert('RGB')
+    imgwidth, imgheight = image.size
+    width += imgwidth
+    height += imgheight
+    num += 1
+    if maxwidth < imgwidth:
+        maxwidth = imgwidth
+    if maxheight < imgheight:
+        maxheight = imgheight
+    if minwidth > imgwidth:
+        minwidth = imgwidth
+    if minheight > imgheight:
+        minheight = imgheight
+
+print("Width: {}".format(width / num))
+print("Height: {}".format(height / num))
+print("Max Width: {}".format(maxwidth))
+print("Max Height: {}".format(maxheight))
+print("Min Width: {}".format(minwidth))
+print("Min Height: {}".format(minheight))

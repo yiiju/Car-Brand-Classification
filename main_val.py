@@ -76,30 +76,41 @@ if __name__ == '__main__':
     # Convert a PIL image or numpy.ndarray to tensor.
     # (H*W*C) in range [0, 255] to a shape (C*H*W) in the range [0.0, 1.0].
     transform = transforms.Compose([
-        transforms.Resize((256, 256)),
+        transforms.Resize((500, 700)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomRotation(15),
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225]),
+        # transforms.Normalize(mean=[0.4706, 0.4598, 0.4545],
+        #                      std=[0.2628, 0.2616, 0.2663]),
+        # transforms.Normalize(mean=[0.5, 0.5, 0.5],
+        #                      std=[0.5, 0.5, 0.5]),
     ])
 
     val_transform = transforms.Compose([
-        transforms.Resize((256, 256)),
+        transforms.Resize((500, 700)),
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225]),
+        # transforms.Normalize(mean=[0.4706, 0.4598, 0.4545],
+        #                      std=[0.2628, 0.2616, 0.2663]),
+        # transforms.Normalize(mean=[0.5, 0.5, 0.5],
+        #                      std=[0.5, 0.5, 0.5]),
     ])
 
     # Download train dataset
     trainSet = carDataset(root='./data', imgdir='training_data/training_data',
                           labelfile='training_labels.csv',
                           split='train', transform=transform)
-    trainLoader = DataLoader(trainSet, batch_size=8,
+    trainLoader = DataLoader(trainSet, batch_size=GlobalSetting.batch_size,
                              shuffle=True, num_workers=4)
 
     valSet = carDataset(root='./data', imgdir='training_data/training_data',
                         labelfile='training_labels.csv',
                         split='val', transform=val_transform)
-    valLoader = DataLoader(valSet, batch_size=8, shuffle=True, num_workers=4)
+    valLoader = DataLoader(valSet, batch_size=GlobalSetting.batch_size,
+                           shuffle=True, num_workers=4)
 
     # net = SimpleCNN()
     net = GlobalSetting.Model
@@ -113,7 +124,7 @@ if __name__ == '__main__':
 
     # Train the network
     epochs = GlobalSetting.Epochs
-    PATH = GlobalSetting.ModelPath
+    PATH = GlobalSetting.ValModelPath
     model = train_model_val(model=net,
                             criterion=criterion,
                             optimizer=optimizer,

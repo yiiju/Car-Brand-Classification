@@ -1,12 +1,13 @@
 import torch
 from SimpleCNN import SimpleCNN
 from plot import PlotCurve
+import os
 
 import GlobalSetting
 
 
 def train_model(model, criterion, optimizer, scheduler,
-                num_epochs, doPlot, trainSet, trainLoader, path):
+                num_epochs, doPlot, trainSet, trainLoader):
     trainLossValue = []
     trainAccValue = []
     for epoch in range(num_epochs):  # Loop over the dataset multiple times
@@ -45,6 +46,7 @@ def train_model(model, criterion, optimizer, scheduler,
         trainAccValue.append(runningAcc)
         trainLossValue.append(runningLoss)
 
+        path = Checkpoints + epoch + ".pth"
         torch.save(model.state_dict(), path)
 
     # Plot the curve of loss and accuracy
@@ -119,10 +121,17 @@ def train_model_val(model, criterion, optimizer, scheduler, num_epochs,
         trainAccValue.append(runningAcc)
         trainLossValue.append(runningLoss)
 
-        previousValue = valAccValue[-1]
         valAccValue.append(valAcc)
 
-        if valAcc >= previousValue:
+        # Create checkpoint directory
+        if not os.path.exists(GlobalSetting.Checkpoints):
+            os.mkdir(GlobalSetting.Checkpoints)
+            print("Directory ", GlobalSetting.Checkpoints,  " Created")
+
+        checkpath = GlobalSetting.Checkpoints + str(epoch) + ".pth"
+        torch.save(model.state_dict(), checkpath)
+
+        if valAcc >= max(valAccValue):
             print("Store path")
             torch.save(model.state_dict(), path)
 

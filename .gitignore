@@ -6,6 +6,7 @@ TrainingCurve.png
 TrainingLossCurve.png
 try.py
 test.py
-testResult/*.csv
-modelPath/*.pth
-resultImg/*.png
+testResult
+modelPath
+resultImg
+checkpoints

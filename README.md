@@ -12,17 +12,17 @@ Intel(R) Xeon(R) Silver 4210 CPU @ 2.20GHz
 ### Install Dependency
 All requirements is detailed in requirements.txt.
 
-`pip install -r requirements.txt`
+    $ pip install -r requirements.txt
 
 ### Create Directory
-Create directory for store model path, result inages, and test result.
+Create directory for store model path, result images, and test result.
 
-`python setup.py`
+    $ python setup.py
 
 ### Coding Style
 Use PEP8 guidelines.
 
-`pycodestyle *.py`
+    $ pycodestyle *.py
 
 ## Dataset
 The data directory is structured as:
@@ -36,13 +36,13 @@ The data directory is structured as:
 ## Train
 Train model.
 
-`python main.py`
+    $ python main.py
 
 Change the `modelname` in [GlobalSetting.py](./GlobalSetting.py) to change the name saving model weights, and result plot in training.
 
 ## Inference
 Use pretrained weights to make predictions on images.
 
-`python Test.py`
+    $ python Test.py
 
 Change the `modelname` in [GlobalSetting.py](./GlobalSetting.py) to get the pretrained weights you want and the path storing the test result.

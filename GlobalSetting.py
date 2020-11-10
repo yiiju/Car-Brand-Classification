@@ -5,17 +5,21 @@ Test = True
 
 # modelname = 'VGG19_pretrain_finetuneFC_epoch50'
 # modelname = 'GoogleNet_pretrain_finetuneFC_epoch80'
-modelname = 'ResNet50_pretrain_finetuneall_512_epoch60'
+# modelname = 'ResNet50_pretrain_finetuneall_size57_val_norm_batch8_epoch80'
 print(modelname)
 
-ModelPath = './modelPath/' + modelname + '.pth'
 TrainingLossCurve = './resultImg/TrainingLossCurve_' + modelname + '.png'
 TrainingCurve = './resultImg/TrainingCurve_' + modelname + '.png'
 AllCurve = './resultImg/AllCurve_' + modelname + '.png'
 TestResultPath = './testResult/' + modelname + 'Output.csv'
+ValModelPath = './modelPath/val/' + modelname + '.pth'
 FinalPATH = './modelPath/final_' + modelname + '.pth'
-Epochs = 60
-batch_size = 16
+Checkpoints = './checkpoints/' + modelname + '/'
+# Checkpoint for test
+TestModelPath = './modelPath/val/' + modelname + '.pth'
+
+Epochs = 80
+batch_size = 8
 
 Model = torch.hub.load('pytorch/vision:v0.6.0', 'resnet50', pretrained=True)
 
